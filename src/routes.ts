@@ -1,11 +1,22 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+import { PrismaClient } from '@prisma/client'
 
-app.get('/', (req:any, res:any) => {
-  res.send('Hello World!');
-});
+const prisma = new PrismaClient()
 
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
-});
+async function main() {
+    const user = await prisma.user.create({
+        data: {
+          name: 'Leonardo',
+          email: 'leo.ronchini@hotmail.com',
+        },
+      })
+      console.log(user)}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
